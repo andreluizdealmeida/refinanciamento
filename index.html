@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Refinanciamento Consignado | André Almeida & Advogados</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- PDF.js para leitura segura no navegador -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        if (window.pdfjsLib) {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        }
+    </script>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">André Almeida & Advogados Associados</div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <h1>Descontos no benefício do INSS por refinanciamento consignado que você não entendeu ou não autorizou?</h1>
+                <p class="subtitle">Um contrato digital, reconhecimento de biometria facial ou um pequeno valor de "troco" depositado na sua conta não encerram a análise. Entenda seus direitos.</p>
+                <a href="#analise" class="btn-primary">Solicitar análise preliminar do caso</a>
+                <p class="ethical-warning">A análise depende dos documentos e não há promessa de resultado.</p>
+            </div>
+        </section>
+
+        <!-- Scanner de Extrato INSS -->
+        <section class="raiox-section">
+            <div class="container">
+                <div class="raiox-box" id="scanner-box">
+                    <h2>Análise Automática e Segura</h2>
+                    <p>Faça o upload do seu <strong>Extrato de Empréstimos do Meu INSS (HisCon)</strong>. Nosso robô fará a leitura local e segura dos seus contratos ativos para encontrar indícios de abusos.</p>
+                    
+                    <div id="drop-zone" class="drop-zone">
+                        <span class="drop-icon">📄</span>
+                        <span class="drop-text">Clique ou arraste o seu PDF do Extrato (HisCon) aqui</span>
+                        <input type="file" id="file-input" accept=".pdf" style="display: none;">
+                    </div>
+
+                    <div id="scanner-loading" class="scanner-loading" style="display: none;">
+                        <div class="scanner-line"></div>
+                        <p>Lendo os contratos do seu INSS de forma segura...</p>
+                    </div>
+
+                    <div id="scanner-resultado" class="scanner-resultado" style="display: none; text-align: left;">
+                        <div class="highlight-box" style="border-left-color: var(--secondary-color); background-color: #fff9e6;">
+                            <h3 style="color: var(--primary-color); margin-bottom: 10px;">✅ Leitura Concluída!</h3>
+                            <div id="dados-extraidos">
+                                <!-- Preenchido pelo JS -->
+                            </div>
+                        </div>
+                        <div style="text-align: center; margin-top: 25px;">
+                            <p style="font-weight: bold; margin-bottom: 15px;">Os dados acima confirmam a sua suspeita de refinanciamento indevido?</p>
+                            <div class="scanner-actions">
+                                <button id="btn-enviar-dados-wa" class="btn-whatsapp scanner-action-primary" type="button">
+                                    📲 Enviar Relatório para Análise Jurídica
+                                </button>
+                                <button id="btn-novo-pdf" class="btn-secondary" type="button">
+                                    Escolher outro PDF
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p style="font-size: 0.85rem; color: #999; margin-top: 20px; text-align: center;">
+                        🔒 Privacidade Garantida: A leitura do arquivo é feita diretamente no seu aparelho. O documento PDF não é salvo nem enviado para nossos servidores.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sinais -->
+        <section class="sinais container">
+            <h2>Você percebeu algum destes sinais?</h2>
+            <div class="grid-cards">
+                <div class="card">
+                    <div class="icon">🔍</div>
+                    <p>Desconto novo no seu benefício que você não esperava.</p>
+                </div>
+                <div class="card">
+                    <div class="icon">💰</div>
+                    <p>Depósito de um "troco" muito pequeno na sua conta, acompanhado de uma dívida enorme.</p>
+                </div>
+                <div class="card">
+                    <div class="icon">📅</div>
+                    <p>Prazo do seu empréstimo foi alongado (mais parcelas) sem explicação clara.</p>
+                </div>
+                <div class="card">
+                    <div class="icon">📱</div>
+                    <p>Contratação rápida por aplicativo ou telefone, sem ler papéis.</p>
+                </div>
+                <div class="card">
+                    <div class="icon">🤷</div>
+                    <p>O banco alega ter sua biometria, mas você achava que era empréstimo novo ou portabilidade.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- O que é refinanciamento -->
+        <section class="info-section bg-light">
+            <div class="container">
+                <h2>Afinal, o que é refinanciamento consignado?</h2>
+                <p>O refinanciamento (ou repactuação) acontece quando o banco pega um empréstimo antigo que você já estava pagando, quita o saldo devedor e cria um <strong>novo contrato</strong>.</p>
+                <p>Nesse processo, geralmente o prazo é esticado novamente para o limite máximo (ex: 84 meses) e as taxas de juros podem ser alteradas. O resultado? O consumidor recebe um pequeno valor de "troco" na conta, mas acaba pagando juros por muitos anos a mais, gerando um alto impacto no benefício previdenciário.</p>
+            </div>
+        </section>
+
+        <!-- Não é empréstimo novo -->
+        <section class="info-section">
+            <div class="container">
+                <h2>Refinanciamento não é empréstimo novo</h2>
+                <p>Muitos aposentados acreditam estar fazendo um novo empréstimo de pequeno valor, quando na verdade estão renegociando uma dívida antiga gigante.</p>
+                <div class="highlight-box">
+                    <strong>Atenção:</strong> A lei exige que o consumidor seja informado de forma clara, prévia e adequada. Fazer o consumidor acreditar que está contratando um empréstimo novo ou apenas fazendo "portabilidade", omitindo os impactos da renegociação da dívida antiga, fere o dever de informação.
+                </div>
+            </div>
+        </section>
+
+        <!-- Biometria e TED -->
+        <section class="info-section bg-light">
+            <div class="container">
+                <h2>Biometria facial e "troco" na conta não são provas absolutas de consentimento</h2>
+                <div class="grid-2-col">
+                    <div>
+                        <h3>Biometria facial</h3>
+                        <p>A biometria (selfie) ou assinatura digital provam apenas a <strong>identidade</strong> de quem estava com o celular. Elas <strong>não provam</strong> que o consumidor recebeu as informações corretas, que leu o contrato ou que compreendeu a matemática da operação.</p>
+                    </div>
+                    <div>
+                        <h3>Recebimento de TED/Troco</h3>
+                        <p>Receber um dinheiro na conta não significa consentimento informado. O consumidor pode aceitar o dinheiro acreditando ser referente a um empréstimo novo de pequeno valor, desconhecendo que, por trás daquele depósito, havia uma renegociação abusiva de contrato antigo.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dever de informação -->
+        <section class="info-section">
+            <div class="container">
+                <h2>O dever de informação do banco</h2>
+                <p>Antes de você assinar ou confirmar qualquer biometria, o banco é obrigado a apresentar com clareza:</p>
+                <ul class="check-list">
+                    <li>O Custo Efetivo Total (CET) da operação.</li>
+                    <li>O saldo devedor do contrato anterior que está sendo quitado.</li>
+                    <li>O prazo e o custo total do novo contrato.</li>
+                    <li>A simulação e a comparação "Antes × Depois".</li>
+                    <li>O valor exato que será efetivamente liberado (o "troco").</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Quando procurar análise e documentos -->
+        <section class="info-section bg-light">
+            <div class="container">
+                <div class="grid-2-col">
+                    <div>
+                        <h2>Quando vale procurar análise jurídica?</h2>
+                        <p>Se você se sente lesado, se o valor pago em juros parece desproporcional ao valor recebido, ou se houve falha na clareza e transparência no momento da contratação. Nosso objetivo é analisar se a instituição financeira cumpriu seu dever de informação pré-contratual.</p>
+                    </div>
+                    <div>
+                        <h2>Quais documentos ajudam na análise?</h2>
+                        <ul class="doc-list">
+                            <li>Extrato de Empréstimos Consignados (HisCon) do INSS.</li>
+                            <li>Extrato bancário da época em que o dinheiro caiu na conta.</li>
+                            <li>Cópia do contrato (se o banco tiver fornecido).</li>
+                            <li>Prints de conversas de WhatsApp, protocolos ou mensagens.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Como funciona nossa análise -->
+        <section class="info-section">
+            <div class="container">
+                <h2>Como funciona nossa análise?</h2>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-num">1</div>
+                        <p><strong>Conferência do Extrato do INSS:</strong> Identificação da operação e de descontos ativos.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">2</div>
+                        <p><strong>Comparação Econômica:</strong> Análise do impacto no benefício.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">3</div>
+                        <p><strong>Verificação Pré-contratual:</strong> Avaliação das informações prestadas antes do aceite.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">4</div>
+                        <p><strong>Avaliação de Provas e Estratégia:</strong> Definição dos caminhos jurídicos adequados ao seu caso.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Multi-step Form -->
+        <section id="analise" class="form-section bg-light">
+            <div class="container">
+                <div class="form-wrapper">
+                    <h2>Solicite uma análise preliminar</h2>
+                    <p class="text-center mb-4">Preencha as informações abaixo para que possamos entender o seu caso. É rápido e seguro.</p>
+                    
+                    <div class="audio-alternative" style="background-color: #e8f5e9; border: 2px dashed #25D366; padding: 30px; border-radius: 12px; text-align: center; margin-bottom: 40px;">
+                        <h3 style="color: #128c7e; margin-bottom: 10px;">Dificuldade para ler ou preencher formulários?</h3>
+                        <p style="margin-bottom: 20px;">Não se preocupe. Você pode pular todas as perguntas abaixo e apenas nos mandar um áudio no WhatsApp contando a sua história.</p>
+                        <a href="https://api.whatsapp.com/send?phone=5562994030708&text=Ol%C3%A1%2C%20tenho%20dificuldade%20de%20preencher%20o%20formul%C3%A1rio%20no%20site%20e%20gostaria%20de%20explicar%20meu%20caso%20por%20%C3%A1udio." target="_blank" class="btn-whatsapp" style="background-color: #25D366; color: white; padding: 15px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: transform 0.2s;">
+                            🎙️ Explicar por Áudio no WhatsApp
+                        </a>
+                    </div>
+                    
+                    <div style="text-align: center; margin-bottom: 30px; position: relative;">
+                        <hr style="border: 0; border-top: 1px solid #ccc; position: absolute; width: 100%; top: 50%; z-index: 1;">
+                        <span style="background: white; padding: 0 15px; position: relative; z-index: 2; color: #666; font-weight: bold;">OU PREENCHA ONLINE</span>
+                    </div>
+
+                    <form id="analysis-form">
+                        <!-- Step 1: Dados Básicos -->
+                        <div class="form-step active" data-step="1">
+                            <h3>1. Dados Básicos</h3>
+                            <div class="form-group">
+                                <label for="nome">Nome completo</label>
+                                <input type="text" id="nome" name="nome" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="whatsapp">WhatsApp (com DDD)</label>
+                                <input type="tel" id="whatsapp" name="whatsapp" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="cidade_estado">Cidade / Estado</label>
+                                <input type="text" id="cidade_estado" name="cidade_estado" required>
+                            </div>
+                            <div class="form-group">
+                                <label>O caso é seu ou de um familiar?</label>
+                                <select id="titularidade" name="titularidade" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="Proprio">Próprio</option>
+                                    <option value="Familiar">Familiar</option>
+                                </select>
+                            </div>
+                            <button type="button" class="btn-next">Próxima Etapa</button>
+                        </div>
+
+                        <!-- Step 2: Perfil do Beneficiário -->
+                        <div class="form-step" data-step="2">
+                            <h3>2. Perfil do Titular do Benefício</h3>
+                            <div class="form-group">
+                                <label for="nome_titular">Nome do titular do benefício</label>
+                                <input type="text" id="nome_titular" name="nome_titular" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="idade_titular">Idade do titular</label>
+                                <input type="number" id="idade_titular" name="idade_titular" required>
+                            </div>
+                            <div class="form-group">
+                                <label>O titular é:</label>
+                                <select id="tipo_beneficio" name="tipo_beneficio" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="Aposentado">Aposentado</option>
+                                    <option value="Pensionista">Pensionista</option>
+                                    <option value="Outro (BPC/LOAS)">Outro beneficiário do INSS</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Possui alguma destas características?</label>
+                                <div class="checkbox-group">
+                                    <label><input type="checkbox" name="vulnerabilidade" value="Baixa escolaridade/Analfabetismo"> Baixa escolaridade ou Analfabetismo</label>
+                                    <label><input type="checkbox" name="vulnerabilidade" value="Dificuldade de leitura"> Dificuldade de leitura</label>
+                                    <label><input type="checkbox" name="vulnerabilidade" value="Doença/Incapacidade"> Doença ou Incapacidade</label>
+                                    <label><input type="checkbox" name="vulnerabilidade" value="Dificuldade com celular/aplicativo"> Dificuldade com celular/aplicativo</label>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn-prev">Voltar</button>
+                                <button type="button" class="btn-next">Próxima Etapa</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Dados do Contrato -->
+                        <div class="form-step" data-step="3">
+                            <h3>3. Detalhes do Desconto</h3>
+                            <div class="form-group">
+                                <label for="banco">Banco que realiza o desconto</label>
+                                <input type="text" id="banco" name="banco" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="valor_parcela">Valor da parcela descontada (R$)</label>
+                                <input type="text" id="valor_parcela" name="valor_parcela" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="data_inicio">Data aproximada de início dos descontos</label>
+                                <input type="month" id="data_inicio" name="data_inicio">
+                            </div>
+                            <div class="form-group">
+                                <label>O desconto ainda está ativo?</label>
+                                <select id="desconto_ativo" name="desconto_ativo" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="Sim">Sim</option>
+                                    <option value="Não">Não</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Qual a modalidade que aparece no extrato do INSS?</label>
+                                <select id="modalidade" name="modalidade" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="Emprestimo">Empréstimo</option>
+                                    <option value="Refinanciamento">Refinanciamento</option>
+                                    <option value="Cartao Consignado / RMC / RCC">Cartão Consignado / RMC / RCC</option>
+                                    <option value="Nao sabe">Não sei / Outro</option>
+                                </select>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn-prev">Voltar</button>
+                                <button type="button" class="btn-next">Próxima Etapa</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: A Contratação -->
+                        <div class="form-step" data-step="4">
+                            <h3>4. Como foi a contratação?</h3>
+                            <div class="form-group">
+                                <label>Por onde ocorreu a contratação?</label>
+                                <select id="canal_contratacao" name="canal_contratacao" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="Aplicativo">Aplicativo de celular</option>
+                                    <option value="Telefone/Ligacao">Telefone (ligação)</option>
+                                    <option value="WhatsApp">WhatsApp</option>
+                                    <option value="Agencia Bancaria">Agência Bancária</option>
+                                    <option value="Correspondente Bancario">Correspondente Bancário (Loja)</option>
+                                    <option value="Caixa Eletronico">Caixa Eletrônico (Banco24h)</option>
+                                    <option value="Nao sabe">Não sei</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>O que foi exigido para "assinar"? (Marque todos que lembrar)</label>
+                                <div class="checkbox-group">
+                                    <label><input type="checkbox" name="assinatura" value="Selfie/Biometria"> Foto de rosto (Selfie/Biometria)</label>
+                                    <label><input type="checkbox" name="assinatura" value="Assinatura Digital (link)"> Assinatura digital (clicar em um link/SMS)</label>
+                                    <label><input type="checkbox" name="assinatura" value="Gravacao de voz"> Gravação de voz (telefone)</label>
+                                    <label><input type="checkbox" name="assinatura" value="Videochamada"> Vídeochamada</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>O que foi prometido a você pelo vendedor?</label>
+                                <div class="checkbox-group">
+                                    <label><input type="checkbox" name="promessa" value="Portabilidade"> Portabilidade para outro banco</label>
+                                    <label><input type="checkbox" name="promessa" value="Reducao de parcela"> Redução do valor da parcela atual</label>
+                                    <label><input type="checkbox" name="promessa" value="Novo Emprestimo"> Apenas um novo empréstimo de valor baixo</label>
+                                    <label><input type="checkbox" name="promessa" value="Liberacao de valor retido"> Liberação de valor "retido" ou "atrasado"</label>
+                                    <label><input type="checkbox" name="promessa" value="Renegociacao"> Renegociação da dívida</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Você sabia claramente que estava refinanciando (zerando e recomeçando) um contrato anterior?</label>
+                                <select id="sabia_refinanciamento" name="sabia_refinanciamento" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="Sim">Sim, eu sabia</option>
+                                    <option value="Nao">Não, eu não sabia</option>
+                                </select>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn-prev">Voltar</button>
+                                <button type="button" class="btn-next">Próxima Etapa</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 5: Financeiro e Documentos -->
+                        <div class="form-step" data-step="5">
+                            <h3>5. Valores e Documentação</h3>
+                            <div class="form-group">
+                                <label for="valor_recebido">Qual foi o valor depositado na sua conta? ("Troco")</label>
+                                <input type="text" id="valor_recebido" name="valor_recebido">
+                            </div>
+                            <div class="form-group">
+                                <label>Antes de aceitar, o banco/vendedor explicou o saldo anterior e o Custo Efetivo Total (CET)?</label>
+                                <select id="explicacao_banco" name="explicacao_banco" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="Sim">Sim, explicaram tudo</option>
+                                    <option value="Nao">Não me informaram isso</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Você recebeu uma cópia do contrato para ler <strong>antes</strong> de dar o aceite?</label>
+                                <select id="contrato_previo" name="contrato_previo" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="Sim">Sim</option>
+                                    <option value="Nao">Não</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Quais documentos você já tem em mãos? (Marque todos que possui)</label>
+                                <div class="checkbox-group">
+                                    <label><input type="checkbox" name="documentos" value="Extrato INSS"> Extrato de Empréstimos (HisCon) do INSS</label>
+                                    <label><input type="checkbox" name="documentos" value="Extrato Bancario"> Extrato da conta bancária (da época do depósito)</label>
+                                    <label><input type="checkbox" name="documentos" value="Contrato"> Cópia do Contrato Assinado</label>
+                                    <label><input type="checkbox" name="documentos" value="Prints WhatsApp"> Prints de conversas de WhatsApp com vendedor</label>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group consent-group">
+                                <label>
+                                    <input type="checkbox" id="consentimento" name="consentimento" required>
+                                    Estou ciente de que as informações fornecidas passarão por uma triagem preliminar documental e que o preenchimento deste formulário não constitui garantia de resultado e não representa, neste momento, a contratação formal dos serviços advocatícios.
+                                </label>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn-prev">Voltar</button>
+                                <button type="submit" class="btn-submit">Enviar para Análise</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="faq">
+            <div class="container">
+                <h2>Perguntas Frequentes (FAQ)</h2>
+                
+                <div class="faq-item">
+                    <button class="faq-question">Eu fiz a biometria facial, isso não prova que eu aceitei tudo?</button>
+                    <div class="faq-answer">
+                        <p>A biometria facial prova apenas a sua identidade no momento da contratação. Ela não isenta o banco do dever de prestar informações claras e adequadas sobre as taxas de juros, saldo devedor e custo efetivo total antes da assinatura digital.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question">Recebi um "troco" na conta. Isso invalida meu direito de reclamar?</button>
+                    <div class="faq-answer">
+                        <p>Não necessariamente. Se o consumidor recebeu um pequeno valor acreditando tratar-se de um empréstimo novo, e não foi devidamente alertado de que estava alongando e encarecendo uma dívida enorme já existente, pode haver falha no dever de informação.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">Um familiar preencheu meus dados no celular sem eu entender muito bem. E agora?</button>
+                    <div class="faq-answer">
+                        <p>Isso é comum. É fundamental analisarmos os documentos, especialmente o contrato e os comprovantes, para entender em quais condições a contratação foi conduzida pelo banco e se houve vício de consentimento ou abuso da vulnerabilidade do idoso.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">Refinanciamento consignado é ilegal?</button>
+                    <div class="faq-answer">
+                        <p>Não, a operação de refinanciamento é permitida por lei. A possível ilegalidade ocorre quando a operação é feita sem transparência, escondendo do consumidor o impacto financeiro real da transação ou mascarando a renegociação sob a aparência de um "novo empréstimo pequeno".</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">Vocês garantem causa ganha ou devolução do dinheiro?</button>
+                    <div class="faq-answer">
+                        <p><strong>Não existe causa ganha nem promessa de resultado na advocacia.</strong> Nosso trabalho consiste em avaliar a documentação (fase preliminar) e, caso identificada falha do banco, propor medidas judiciais fundamentadas, cujo resultado final dependerá sempre do entendimento do juiz responsável pelo caso.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p><strong>André Almeida & Advogados Associados</strong> | Anápolis - GO</p>
+            <p class="footer-ethical-notice">
+                AVISO ÉTICO (OAB): O conteúdo desta página é estritamente informativo e não substitui a consulta jurídica individualizada. 
+                Resultados dependem exclusivamente da análise minuciosa de documentação e do entendimento do Poder Judiciário. Não prometemos resultados ou indenizações.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://api.whatsapp.com/send?phone=5562994030708" class="float-wa" target="_blank" title="Falar no WhatsApp">
+        <svg viewBox="0 0 32 32" width="35" height="35" fill="white"><path d="M16 2.016A13.97 13.97 0 0 0 2.031 16c0 2.459.637 4.872 1.844 7L2 30l7.156-1.875a13.974 13.974 0 0 0 6.844 1.781c7.706 0 13.969-6.262 13.969-13.969C30 8.281 23.706 2.016 16 2.016zM16 27.531a11.597 11.597 0 0 1-5.906-1.625l-.438-.25-4.375 1.156 1.188-4.25-.281-.438A11.572 11.572 0 0 1 4.375 16c0-6.4 5.225-11.625 11.625-11.625 6.394 0 11.625 5.225 11.625 11.625 0 6.394-5.231 11.531-11.625 11.531zm6.313-8.625c-.344-.188-2.031-1-2.344-1.125-.313-.125-.563-.188-.781.188-.25.344-.875 1.125-1.094 1.344-.219.219-.438.25-.781.063-.344-.188-1.438-.531-2.75-1.688-1.031-.906-1.719-2.031-1.938-2.375-.219-.344-.031-.531.156-.719.156-.156.344-.406.531-.625.188-.188.25-.344.344-.563.125-.25.063-.469-.031-.656-.094-.188-.781-1.906-1.094-2.625-.281-.688-.563-.594-.781-.594-.219 0-.469-.031-.719-.031-.25 0-.688.094-1.031.469s-1.344 1.313-1.344 3.188c0 1.906 1.375 3.719 1.563 3.969.188.25 2.719 4.156 6.563 5.844 3.844 1.656 3.844 1.125 4.531 1.031.688-.063 2.031-.813 2.344-1.625.281-.781.281-1.469.188-1.625-.094-.125-.344-.188-.688-.344z"></path></svg>
+    </a>
+
+    <script src="script.js"></script>
+</body>
+</html>
